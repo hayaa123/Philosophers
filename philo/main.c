@@ -22,7 +22,6 @@ int main(int argc, char **argv)
 
     if(argc < 1 || argc > 6)
         return(1);
-    
     init_philo(&philo, argv);
     forks = init_forks(philo.philo_num);
     philos = create_philos(philo.philo_num, forks, philo);
