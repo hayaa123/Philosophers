@@ -8,7 +8,7 @@ LIB = libphilo.a
 
 DEBUGFLAG = -g
 
-SRC = main.c routine.c utils.c
+SRC = main.c routine.c utils.c calc_time_now.c ft_atoi.c ft_calloc.c monitor.c create_philos.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -21,7 +21,7 @@ $(LIB) : $(OBJ)
 	ar rcs $(LIB) $(OBJ)
 
 clean:
-	rm -rf $(OBJ)
+	rm -rf $(OBJ) $(LIB)
 
 fclean: clean
 	rm -rf $(NAME)
