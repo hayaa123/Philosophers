@@ -6,7 +6,7 @@
 /*   By: haya <haya@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 12:08:09 by haya              #+#    #+#             */
-/*   Updated: 2026/01/11 14:16:35 by haya             ###   ########.fr       */
+/*   Updated: 2026/01/12 16:10:13 by haya             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,14 @@ int64_t *init_time_of_last(int philo_num)
     while(i < philo_num)
     {
         time_of_last_meal[i] = calc_time_now();
+        if(time_of_last_meal[i] == 0)
+            return (NULL);
         i++;
     }
     return (time_of_last_meal);
 }
 
-philo_t * init_philo(char **argv)
+philo_t *init_philo(char **argv)
 {
     philo_t *philo;
     
@@ -43,15 +45,72 @@ philo_t * init_philo(char **argv)
     return (philo);
 }
 
+pthread_mutex_t *init_time_mutext(int philo_num)
+{
+    pthread_mutex_t *time_mutex;
+    int i;
+    
+    time_mutex = malloc(sizeof(pthread_mutex_t) * philo_num);
+    i = 0;
+    if(!time_mutex)
+        return (NULL);
+    while(i< philo_num)
+    {
+        pthread_mutex_init(&(time_mutex[i]), NULL);
+        i++;
+    }
+    return (time_mutex);
+}
+
+void safe_free(void **place)
+{
+    if(*place)
+    {
+        free(*place);
+        *place = NULL;
+    }
+}
+
+int validate_philo_data(philo_data_t *philo_data)
+{
+    int i;
+
+    i = 0;
+    if(!philo_data->time_mutex || !philo_data->time_of_last_meal
+        || !philo_data->end_mutex || !philo_data->current_eat_count
+    )
+    {
+        while(i < philo_data->philo->philo_num)
+        {
+            pthread_mutex_destroy(&(philo_data->time_mutex[i]));
+            i++;
+        }
+        safe_free((void **) &(philo_data->time_mutex));
+        safe_free((void **) &(philo_data->time_of_last_meal));
+        safe_free((void **) &(philo_data->current_eat_count));
+        pthread_mutex_destroy(philo_data->end_mutex);
+        safe_free((void **) &(philo_data));
+        return (0); 
+    }
+    return(1);
+}
+
 philo_data_t *init_philo_data(philo_t *philo)
 {
     philo_data_t *philo_data;
     
     philo_data = malloc(sizeof(philo_data_t));
+    if(!philo_data)
+        return (NULL);
+    philo_data->time_mutex = init_time_mutext(philo->philo_num);
     philo_data->time_of_last_meal = init_time_of_last(philo->philo_num);
+    philo_data->end_mutex = malloc(sizeof(pthread_mutex_t));
+    pthread_mutex_init(philo_data->end_mutex, NULL);
     philo_data->current_eat_count = ft_calloc(philo->philo_num, sizeof(int));
     philo_data->end_of_simulation = 0;
     philo_data->philo = philo;
+    if(validate_philo_data(philo_data) == 0)
+        return(NULL);
     return (philo_data);
 }
 

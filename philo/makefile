@@ -14,6 +14,8 @@ OBJ = $(SRC:.c=.o)
 
 all: $(NAME)
 
+debug: $(LIB)
+	$(CC) $(CFLAGS) $(DEBUGFLAG) -L. $(LIB) -o $(NAME)
 $(NAME): $(LIB)
 	$(CC) $(CFLAGS) -L. $(LIB) -o $(NAME)
 

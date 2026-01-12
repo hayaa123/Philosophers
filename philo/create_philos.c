@@ -6,7 +6,7 @@
 /*   By: haya <haya@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/11 11:13:26 by haya              #+#    #+#             */
-/*   Updated: 2026/01/11 13:55:11 by haya             ###   ########.fr       */
+/*   Updated: 2026/01/12 15:44:24 by haya             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ thread_args_t *init_thread_args(philo_t *philo, int i, pthread_mutex_t *forks, p
         thread_args_t *args;
 
         args = malloc(sizeof(thread_args_t));
+        if(!args)
+            return(NULL);
         args->current_philo = i;
         args->current_philo_count = philo->philo_num;
         args->philo = philo;
@@ -25,6 +27,8 @@ thread_args_t *init_thread_args(philo_t *philo, int i, pthread_mutex_t *forks, p
         args->current_time_last =  &(philo_data->time_of_last_meal[i]);
         args->current_eat_count = &(philo_data->current_eat_count[i]);
         args->end_of_simulation = &(philo_data->end_of_simulation);
+        args->time_mutex = &(philo_data->time_mutex[i]);
+        args->end_mutext = philo_data->end_mutext;
         return (args);
 }
 
@@ -41,6 +45,12 @@ pthread_t *create_philos(int philo_num, pthread_mutex_t *forks, philo_t *philo, 
     while(i < philo_num)
     {
         args = init_thread_args(philo, i, forks, philo_data);
+        if(!args)
+        {
+            philo_data->end_of_simulation = 1;
+            free(philos);
+            return(NULL);   
+        }
         if(pthread_create(&(philos[i]), NULL, &routine, (void *)args) != 0)
         {
             free(args);

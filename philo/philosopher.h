@@ -6,7 +6,7 @@
 /*   By: haya <haya@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/11 12:28:25 by haya              #+#    #+#             */
-/*   Updated: 2026/01/11 14:13:02 by haya             ###   ########.fr       */
+/*   Updated: 2026/01/12 16:07:17 by haya             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ typedef struct philo_data_s
 {
     philo_t *philo;
     int64_t *time_of_last_meal;
+    pthread_mutex_t *time_mutex;
+    pthread_mutex_t *end_mutex;
     int end_of_simulation;
     int *current_eat_count;
 } philo_data_t;
@@ -44,6 +46,8 @@ typedef struct thread_args_s
     int64_t *current_time_last;
     int *current_eat_count;
     int *end_of_simulation;
+    pthread_mutex_t *time_mutex;
+    pthread_mutex_t *end_mutext;
     int current_philo_count;
     pthread_mutex_t *forks;
     philo_t *philo;

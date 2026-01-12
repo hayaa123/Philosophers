@@ -6,7 +6,7 @@
 /*   By: haya <haya@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 12:10:00 by haya              #+#    #+#             */
-/*   Updated: 2026/01/11 15:07:51 by haya             ###   ########.fr       */
+/*   Updated: 2026/01/12 16:19:20 by haya             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,18 @@ static void eat(thread_args_t *c_args)
         take_left_right(c_args);
     else
         take_right_left(c_args);
+    pthread_mutex_lock(c_args->end_mutext); 
     if(*(c_args->end_of_simulation) == 1)
     {
+        pthread_mutex_unlock(c_args->end_mutext);
         return_forks(c_args);
         return ;
     }
     printf("%lu philosopher:%i is eating\n", calc_time_now(), c_args->current_philo + 1);
+    pthread_mutex_lock(c_args->time_mutex);
     *(c_args->current_time_last) = calc_time_now();
     *(c_args->current_eat_count) += 1;
+    pthread_mutex_unlock(c_args->time_mutex);
     usleep(c_args->philo->time_to_eat * 1000);    
     return_forks(c_args);
 }
@@ -62,15 +66,21 @@ void *routine(void *args)
     thread_args_t *c_args;
     
     c_args = (thread_args_t *) args;
+    pthread_mutex_lock(c_args->end_mutext);
     while(*(c_args->end_of_simulation) == 0)
     {
+        pthread_mutex_unlock(c_args->end_mutext);
         printf("%lu philosopher:%i is thinking\n", calc_time_now(), c_args->current_philo + 1);
+        if(c_args->philo->philo_num == 1)
+            break;
         eat(c_args);
         if (*(c_args->end_of_simulation) == 1)
             break;
         printf("%lu philosopher:%i is sleeping\n", calc_time_now(), c_args->current_philo + 1);
-        usleep(c_args->philo->time_to_sleep * 1000);         
+        usleep(c_args->philo->time_to_sleep * 1000);  
+        pthread_mutex_lock(c_args->end_mutext);       
     }
+    pthread_mutex_unlock(c_args->end_mutext);
     free(args);
     return(NULL);
 }
