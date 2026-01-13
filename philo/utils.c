@@ -6,7 +6,7 @@
 /*   By: haya <haya@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 12:08:09 by haya              #+#    #+#             */
-/*   Updated: 2026/01/12 16:10:13 by haya             ###   ########.fr       */
+/*   Updated: 2026/01/13 11:55:31 by haya             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,11 @@ int validate_philo_data(philo_data_t *philo_data)
         safe_free((void **) &(philo_data->time_mutex));
         safe_free((void **) &(philo_data->time_of_last_meal));
         safe_free((void **) &(philo_data->current_eat_count));
-        pthread_mutex_destroy(philo_data->end_mutex);
+        if(philo_data->end_mutex)
+        {
+            pthread_mutex_destroy(philo_data->end_mutex);
+            safe_free((void **) &(philo_data->end_mutex));
+        }
         safe_free((void **) &(philo_data));
         return (0); 
     }

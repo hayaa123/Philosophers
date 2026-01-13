@@ -6,7 +6,7 @@
 /*   By: haya <haya@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/11 11:13:26 by haya              #+#    #+#             */
-/*   Updated: 2026/01/12 15:44:24 by haya             ###   ########.fr       */
+/*   Updated: 2026/01/13 11:55:56 by haya             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ thread_args_t *init_thread_args(philo_t *philo, int i, pthread_mutex_t *forks, p
         args->current_eat_count = &(philo_data->current_eat_count[i]);
         args->end_of_simulation = &(philo_data->end_of_simulation);
         args->time_mutex = &(philo_data->time_mutex[i]);
-        args->end_mutext = philo_data->end_mutext;
+        args->end_mutext = philo_data->end_mutex;
         return (args);
 }
 
