@@ -6,19 +6,19 @@
 /*   By: haya <haya@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/11 12:28:25 by haya              #+#    #+#             */
-/*   Updated: 2026/01/12 16:07:17 by haya             ###   ########.fr       */
+/*   Updated: 2026/01/17 17:10:13 by haya             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHER_H
-# define PHILOSOPHER_H
+#define PHILOSOPHER_H
 
 #include <stdio.h>
 #include <pthread.h>
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <stdint.h> 
+#include <stdint.h>
 #include <sys/time.h>
 
 typedef struct philo_s
@@ -34,8 +34,10 @@ typedef struct philo_data_s
 {
     philo_t *philo;
     int64_t *time_of_last_meal;
+    int64_t start_of_simulation;
     pthread_mutex_t *time_mutex;
     pthread_mutex_t *end_mutex;
+    pthread_mutex_t *print_mutex;
     int end_of_simulation;
     int *current_eat_count;
 } philo_data_t;
@@ -44,10 +46,12 @@ typedef struct thread_args_s
 {
     int current_philo;
     int64_t *current_time_last;
+    int64_t start_of_simulation;
     int *current_eat_count;
     int *end_of_simulation;
     pthread_mutex_t *time_mutex;
     pthread_mutex_t *end_mutext;
+    pthread_mutex_t *print_mutex;
     int current_philo_count;
     pthread_mutex_t *forks;
     philo_t *philo;
@@ -59,7 +63,7 @@ philo_t *init_philo(char **argv);
 pthread_mutex_t *init_forks(int philo_num);
 void *routine(void *args);
 int64_t calc_time_now();
-int create_monitor(pthread_t *monitor,philo_data_t *philo_data);
+int create_monitor(pthread_t *monitor, philo_data_t *philo_data);
 int ft_atoi(char *str);
 void free_all(philo_t *philo, pthread_t *philos, philo_data_t *philo_data);
 philo_data_t *init_philo_data(philo_t *philo);

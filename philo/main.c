@@ -5,7 +5,7 @@ void destroy_forks(int philo_num, pthread_mutex_t *forks)
     int i;
 
     i = 0;
-    while(i < philo_num)
+    while (i < philo_num)
     {
         pthread_mutex_destroy(&(forks[i]));
         i++;
@@ -20,7 +20,6 @@ int free_return(philo_t *philo, pthread_t *philos, philo_data_t *philo_data, pth
     return (1);
 }
 
-
 int main(int argc, char **argv)
 {
     philo_t *philo;
@@ -31,22 +30,23 @@ int main(int argc, char **argv)
 
     //@TODO: think of a way to add validation to pthread join monitor.
 
-    if(argc < 1 || argc > 6)
-        return(1);
+    if (argc < 1 || argc > 6)
+        return (1);
     philo = init_philo(argv);
     forks = init_forks(philo->philo_num);
     philo_data = init_philo_data(philo);
-    if(philo_data == NULL)
+    if (philo_data == NULL)
         return (free_return(philo, NULL, philo_data, forks));
-    if(create_monitor(&monitor, philo_data) == 1)
+    if (create_monitor(&monitor, philo_data) == 1)
         return (free_return(philo, NULL, philo_data, forks));
+    philo_data->start_of_simulation = calc_time_now();
     philos = create_philos(philo->philo_num, forks, philo, philo_data);
-    if(!philos)
+    if (!philos)
         return (free_return(philo, NULL, philo_data, forks));
-    if(join_philos(philo->philo_num, philos) != 0 )
-        return(free_return(philo, philos, philo_data, forks));
+    if (join_philos(philo->philo_num, philos) != 0)
+        return (free_return(philo, philos, philo_data, forks));
     if (pthread_join(monitor, NULL) != 0)
-        return(free_return(philo, philos, philo_data, forks));
+        return (free_return(philo, philos, philo_data, forks));
     free_all(philo, philos, philo_data);
     return (0);
 }
