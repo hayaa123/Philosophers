@@ -6,7 +6,7 @@
 /*   By: haya <haya@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 12:08:09 by haya              #+#    #+#             */
-/*   Updated: 2026/01/17 17:10:13 by haya             ###   ########.fr       */
+/*   Updated: 2026/01/18 15:49:49 by haya             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int64_t *init_time_of_last(int philo_num)
     int64_t *time_of_last_meal;
     int i;
 
-    time_of_last_meal = malloc(sizeof(int64_t) * philo_num);
+    time_of_last_meal = calloc(philo_num, sizeof(int64_t));
     i = 0;
     while (i < philo_num)
     {

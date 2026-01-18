@@ -39,7 +39,6 @@ int main(int argc, char **argv)
         return (free_return(philo, NULL, philo_data, forks));
     if (create_monitor(&monitor, philo_data) == 1)
         return (free_return(philo, NULL, philo_data, forks));
-    philo_data->start_of_simulation = calc_time_now();
     philos = create_philos(philo->philo_num, forks, philo, philo_data);
     if (!philos)
         return (free_return(philo, NULL, philo_data, forks));

@@ -6,7 +6,7 @@
 /*   By: haya <haya@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 19:27:55 by haya              #+#    #+#             */
-/*   Updated: 2026/01/17 17:10:13 by haya             ###   ########.fr       */
+/*   Updated: 2026/01/18 15:51:45 by haya             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,13 @@ static int all_eat_enough(philo_data_t *philo_data)
     i = 0;
     while (i < philo_data->philo->philo_num)
     {
+        pthread_mutex_lock(&(philo_data->time_mutex[i]));
         if (philo_data->current_eat_count[i] < philo_data->philo->eat_count)
+        {
+            pthread_mutex_unlock(&(philo_data->time_mutex[i]));
             return (0);
+        }
+        pthread_mutex_unlock(&(philo_data->time_mutex[i]));
         i++;
     }
     philo_data->end_of_simulation = 1;
@@ -41,7 +46,10 @@ int check_death(philo_data_t *philo_c)
         pthread_mutex_lock(&(philo_c->time_mutex[i]));
         now = calc_time_now();
         if (now == 0)
+        {
+            pthread_mutex_unlock(&(philo_c->time_mutex[i]));
             return (0);
+        }
         if (now - (philo_c->time_of_last_meal[i]) >= philo_c->philo->time_to_die)
         {
             pthread_mutex_lock(philo_c->end_mutex);
@@ -87,7 +95,7 @@ static void *monitor_routine(void *philo_d)
             break;
         }
         pthread_mutex_unlock(philo_c->end_mutex);
-        usleep(1000);
+        usleep(100000);
     }
     return (NULL);
 }

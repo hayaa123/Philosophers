@@ -6,7 +6,7 @@
 /*   By: haya <haya@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/11 11:13:26 by haya              #+#    #+#             */
-/*   Updated: 2026/01/17 17:10:13 by haya             ###   ########.fr       */
+/*   Updated: 2026/01/18 15:44:19 by haya             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ pthread_t *create_philos(int philo_num, pthread_mutex_t *forks, philo_t *philo, 
             free(philos);
             return (NULL);
         }
-        usleep(10000 * i); // is this correct ?
+        // usleep(10000 * i); // is this correct ?
                            // this solved the problem of dieing philo in the test ./philo 5 800 200 200
         i++;
     }
