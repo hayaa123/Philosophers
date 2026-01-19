@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosopher.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: haya <haya@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hal-lawa <hal-lawa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/11 12:28:25 by haya              #+#    #+#             */
-/*   Updated: 2026/01/17 17:10:13 by haya             ###   ########.fr       */
+/*   Updated: 2026/01/19 12:00:07 by hal-lawa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,13 @@ int64_t calc_time_now();
 int create_monitor(pthread_t *monitor, philo_data_t *philo_data);
 int ft_atoi(char *str);
 void free_all(philo_t *philo, pthread_t *philos, philo_data_t *philo_data);
+void free_philo_data(philo_data_t *philo_data);
+void safe_free(void **place);
 philo_data_t *init_philo_data(philo_t *philo);
 void *ft_calloc(int count, unsigned long size);
+void put_err(char *str);
+int validate_input(int argc, char **argv);
+int ft_strlen(char *str);
+int validate_philo_data(philo_data_t *philo_data);
 
 #endif

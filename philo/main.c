@@ -17,8 +17,10 @@ int free_return(philo_t *philo, pthread_t *philos, philo_data_t *philo_data, pth
 {
     free_all(philo, philos, philo_data);
     destroy_forks(philo->philo_num, forks);
+    put_err("something went wrong :(\n");
     return (1);
 }
+
 
 int main(int argc, char **argv)
 {
@@ -28,9 +30,7 @@ int main(int argc, char **argv)
     pthread_t monitor;
     philo_data_t *philo_data;
 
-    //@TODO: think of a way to add validation to pthread join monitor.
-
-    if (argc < 1 || argc > 6)
+    if (!validate_input(argc, argv))
         return (1);
     philo = init_philo(argv);
     forks = init_forks(philo->philo_num);
