@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosopher.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hal-lawa <hal-lawa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: haya <haya@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/11 12:28:25 by haya              #+#    #+#             */
-/*   Updated: 2026/01/19 12:00:07 by hal-lawa         ###   ########.fr       */
+/*   Updated: 2026/01/20 19:59:48 by haya             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef struct philo_data_s
 {
     philo_t *philo;
     int64_t *time_of_last_meal;
-    int64_t start_of_simulation;
+    // int64_t start_of_simulation;
     pthread_mutex_t *time_mutex;
     pthread_mutex_t *end_mutex;
     pthread_mutex_t *print_mutex;
@@ -74,5 +74,8 @@ void put_err(char *str);
 int validate_input(int argc, char **argv);
 int ft_strlen(char *str);
 int validate_philo_data(philo_data_t *philo_data);
+void philo_think(thread_args_t *c_args);
+int is_end_of_simulation(thread_args_t *c_args);
+void philo_sleep(thread_args_t *c_args);
 
 #endif

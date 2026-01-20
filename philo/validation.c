@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hal-lawa <hal-lawa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: haya <haya@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 11:32:14 by hal-lawa          #+#    #+#             */
-/*   Updated: 2026/01/19 11:55:42 by hal-lawa         ###   ########.fr       */
+/*   Updated: 2026/01/20 19:48:18 by haya             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,6 @@ static int is_all_num(char *str)
 
 static int args_error(int argc)
 {
-    char *err;
-    
-    err = "";
     if(argc < 5)
         put_err("programm takes more arguments: expected (4 - 5)\n");
     if (argc > 6)
@@ -77,12 +74,10 @@ static int args_error(int argc)
 int validate_input(int argc, char **argv)
 {
     int i;
-    char *err;
 
     if (argc < 5 || argc > 6)
         return args_error(argc);
     i = 1;
-    err = "";
     while(argv[i])
     {
         if(!is_all_num(argv[i]))

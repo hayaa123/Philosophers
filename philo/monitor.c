@@ -6,7 +6,7 @@
 /*   By: haya <haya@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 19:27:55 by haya              #+#    #+#             */
-/*   Updated: 2026/01/18 15:51:45 by haya             ###   ########.fr       */
+/*   Updated: 2026/01/20 19:32:10 by haya             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int check_death(philo_data_t *philo_c)
             pthread_mutex_unlock(philo_c->end_mutex);
             pthread_mutex_lock(philo_c->print_mutex);
             printf("%lu %i died\n",
-                   philo_c->time_of_last_meal[i] - philo_c->start_of_simulation + philo_c->philo->time_to_die,
+                   now - (philo_c->time_of_last_meal[i]),
                    i + 1);
             pthread_mutex_unlock(philo_c->print_mutex);
             pthread_mutex_unlock(&(philo_c->time_mutex[i]));
@@ -95,7 +95,7 @@ static void *monitor_routine(void *philo_d)
             break;
         }
         pthread_mutex_unlock(philo_c->end_mutex);
-        usleep(100000);
+        usleep(1000);
     }
     return (NULL);
 }
