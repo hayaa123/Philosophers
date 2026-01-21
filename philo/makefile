@@ -2,7 +2,7 @@ NAME = philo
 
 CC = cc
 
-CFLAGS = -Wall -Werror -Wextra -pthread
+CFLAGS = -Wall -Werror -Wextra -pthread -g3
 
 LIB = libphilo.a
 
@@ -28,3 +28,5 @@ clean:
 
 fclean: clean
 	rm -rf $(NAME)
+
+re: fclean all

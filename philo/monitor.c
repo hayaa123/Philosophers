@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: haya <haya@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hal-lawa <hal-lawa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 19:27:55 by haya              #+#    #+#             */
-/*   Updated: 2026/01/20 19:32:10 by haya             ###   ########.fr       */
+/*   Updated: 2026/01/21 11:13:49 by hal-lawa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,10 @@ int check_death(philo_data_t *philo_c)
             philo_c->end_of_simulation = 1;
             pthread_mutex_unlock(philo_c->end_mutex);
             pthread_mutex_lock(philo_c->print_mutex);
-            printf("%lu %i died\n",
-                   now - (philo_c->time_of_last_meal[i]),
-                   i + 1);
+            // printf("%lu %i died\n",
+                //    now - (philo_c->time_of_last_meal[i]),
+                //    i + 1);
+            printf("%lu %i died\n", now - philo_c->start_of_simulation, i + 1 );
             pthread_mutex_unlock(philo_c->print_mutex);
             pthread_mutex_unlock(&(philo_c->time_mutex[i]));
             break;
@@ -95,7 +96,7 @@ static void *monitor_routine(void *philo_d)
             break;
         }
         pthread_mutex_unlock(philo_c->end_mutex);
-        usleep(1000);
+        usleep(500);
     }
     return (NULL);
 }

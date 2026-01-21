@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_philos.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: haya <haya@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hal-lawa <hal-lawa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/11 11:13:26 by haya              #+#    #+#             */
-/*   Updated: 2026/01/20 19:47:53 by haya             ###   ########.fr       */
+/*   Updated: 2026/01/21 10:37:24 by hal-lawa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ pthread_t *create_philos(int philo_num, pthread_mutex_t *forks, philo_t *philo, 
     if (!philos)
         return (NULL);
     start_of_simulation = calc_time_now();
+    philo_data->start_of_simulation = start_of_simulation;
     while (i < philo_num)
     {
         args = init_thread_args(philo, i, forks, philo_data);
