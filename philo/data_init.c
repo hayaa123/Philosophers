@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hal-lawa <hal-lawa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: haya <haya@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 12:08:09 by haya              #+#    #+#             */
-/*   Updated: 2026/01/21 10:37:07 by hal-lawa         ###   ########.fr       */
+/*   Updated: 2026/01/21 21:28:14 by haya             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,6 @@ philo_data_t *init_philo_data(philo_t *philo)
     if (validate_philo_data(philo_data) == 0)
         return (NULL);
     philo_data->start_of_simulation = 0;
-    // if (!philo_data->start_of_simulation)
-    // {
-    //     free_philo_data(philo_data);
-    //     return (NULL);
-    // }
     return (philo_data);
 }
 

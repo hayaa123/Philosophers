@@ -5,6 +5,8 @@ void destroy_forks(int philo_num, pthread_mutex_t *forks)
     int i;
 
     i = 0;
+    if (!forks)
+        return ;
     while (i < philo_num)
     {
         pthread_mutex_destroy(&(forks[i]));
@@ -15,8 +17,8 @@ void destroy_forks(int philo_num, pthread_mutex_t *forks)
 
 int free_return(philo_t *philo, pthread_t *philos, philo_data_t *philo_data, pthread_mutex_t *forks)
 {
-    free_all(philo, philos, philo_data);
     destroy_forks(philo->philo_num, forks);
+    free_all(philo, philos, philo_data);
     put_err("something went wrong :(\n");
     return (1);
 }
@@ -46,6 +48,7 @@ int main(int argc, char **argv)
         return (free_return(philo, philos, philo_data, forks));
     if (pthread_join(monitor, NULL) != 0)
         return (free_return(philo, philos, philo_data, forks));
+    destroy_forks(philo->philo_num, forks);
     free_all(philo, philos, philo_data);
     return (0);
 }

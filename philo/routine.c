@@ -3,31 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hal-lawa <hal-lawa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: haya <haya@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 12:10:00 by haya              #+#    #+#             */
-/*   Updated: 2026/01/21 15:15:20 by hal-lawa         ###   ########.fr       */
+/*   Updated: 2026/01/21 21:58:24 by haya             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-static void take_left_right(thread_args_t *c_args)
-{
-    pthread_mutex_lock(&(c_args->forks[c_args->current_philo]));
-    if (c_args->current_philo == c_args->philo->philo_num - 1)
-        pthread_mutex_lock(&(c_args->forks[0])); 
-    else
-        pthread_mutex_lock(&(c_args->forks[c_args->current_philo + 1]));
-}
+// static void take_left_right(thread_args_t *c_args)
+// {
+//     pthread_mutex_lock(&(c_args->forks[c_args->current_philo]));
+//     if (c_args->current_philo == c_args->philo->philo_num - 1)
+//         pthread_mutex_lock(&(c_args->forks[0]));
+//     else
+//         pthread_mutex_lock(&(c_args->forks[c_args->current_philo + 1]));
+// }
 
-static void take_right_left(thread_args_t *c_args)
+static int take_right_left(thread_args_t *c_args)
 {
     if (c_args->current_philo == c_args->philo->philo_num - 1)
+    {
         pthread_mutex_lock(&(c_args->forks[0]));
+        pthread_mutex_lock(&(c_args->forks[c_args->current_philo]));
+    }
     else
+    {
         pthread_mutex_lock(&(c_args->forks[c_args->current_philo + 1]));
-    pthread_mutex_lock(&(c_args->forks[c_args->current_philo]));
+        pthread_mutex_lock(&(c_args->forks[c_args->current_philo]));
+    }
+    return (0);
 }
 
 static void return_forks(thread_args_t *c_args)
@@ -53,12 +59,12 @@ static void return_forks(thread_args_t *c_args)
 void custom_usleep(int64_t micro_sec, thread_args_t *c_args)
 {
     int64_t waiting_time;
-    
+
     waiting_time = 0;
     while (waiting_time < micro_sec)
     {
         usleep(10000);
-        if(is_end_of_simulation(c_args) == 1)
+        if (is_end_of_simulation(c_args) == 1)
             break;
         waiting_time += 10000;
     }
@@ -67,7 +73,7 @@ void custom_usleep(int64_t micro_sec, thread_args_t *c_args)
 void custom_print(thread_args_t *c_args, char *state)
 {
     pthread_mutex_lock(c_args->print_mutex);
-    if(is_end_of_simulation(c_args) == 1)
+    if (is_end_of_simulation(c_args) == 1)
     {
         pthread_mutex_unlock(c_args->print_mutex);
         return;
@@ -79,27 +85,17 @@ void custom_print(thread_args_t *c_args, char *state)
 
 static void eat(thread_args_t *c_args)
 {
-    if (c_args->current_philo % 2 == 1)
-        take_left_right(c_args);
-    else
-        take_right_left(c_args);
-    pthread_mutex_lock(c_args->end_mutext);
-    if (*(c_args->end_of_simulation) == 1)
+    if (take_right_left(c_args) == 1)
+        return;
+    if (is_end_of_simulation(c_args) == 1)
     {
-        pthread_mutex_unlock(c_args->end_mutext);
         return_forks(c_args);
         return;
     }
-    pthread_mutex_unlock(c_args->end_mutext);
     pthread_mutex_lock(c_args->time_mutex);
     *(c_args->current_time_last) = calc_time_now();
     *(c_args->current_eat_count) += 1;
     pthread_mutex_unlock(c_args->time_mutex);
-    // add check for the end of simulation with each print 
-    // pthread_mutex_lock(c_args->print_mutex);
-    // printf("%lu philosopher:%i is eating\n",
-    //        calc_time_now() - c_args->start_of_simulation, c_args->current_philo + 1);
-    // pthread_mutex_unlock(c_args->print_mutex);
     custom_print(c_args, "eating");
     custom_usleep(c_args->philo->time_to_eat * 1000, c_args);
     return_forks(c_args);
@@ -110,9 +106,9 @@ void *routine(void *args)
     thread_args_t *c_args;
 
     c_args = (thread_args_t *)args;
-    if ((c_args->current_philo + 1 )% 2 == 0)
+    if ((c_args->current_philo + 1) % 2 == 0)
     {
-        usleep(100);
+        usleep(50);
     }
     pthread_mutex_lock(c_args->time_mutex);
     *(c_args->current_time_last) = calc_time_now();
@@ -121,14 +117,14 @@ void *routine(void *args)
     {
         if (c_args->philo->philo_num == 1)
             break;
-        if (is_end_of_simulation(c_args))
+        if (is_end_of_simulation(c_args) == 1)
             break;
         eat(c_args);
-        // custom_print(c_args, "thinking");
-        if (is_end_of_simulation(c_args))
+        custom_print(c_args, "thinking");
+        if (is_end_of_simulation(c_args) == 1)
             break;
         custom_print(c_args, "sleeping");
-        custom_usleep(c_args->philo->time_to_sleep *1000, c_args);
+        custom_usleep(c_args->philo->time_to_sleep * 1000, c_args);
     }
     free(args);
     return (NULL);

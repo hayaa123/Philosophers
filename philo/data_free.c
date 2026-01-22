@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data_free.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hal-lawa <hal-lawa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: haya <haya@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 11:54:58 by hal-lawa          #+#    #+#             */
-/*   Updated: 2026/01/19 11:56:01 by hal-lawa         ###   ########.fr       */
+/*   Updated: 2026/01/21 21:33:23 by haya             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,17 @@ void free_all(philo_t *philo, pthread_t *philos, philo_data_t *philo_data)
         free(philo_data->current_eat_count);
     if (philo_data->time_of_last_meal)
         free(philo_data->time_of_last_meal);
+    if(philo_data->time_mutex)
+    {
+        pthread_mutex_destroy(philo_data->time_mutex);
+        free(philo_data->time_mutex);
+    }
     if (philo_data->print_mutex)
     {
         pthread_mutex_destroy(philo_data->print_mutex);
         free(philo_data->print_mutex);
     }
+    if(philo_data->end_mutex)
+        free(philo_data->end_mutex);
     free(philo_data);
 }
