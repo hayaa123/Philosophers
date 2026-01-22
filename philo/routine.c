@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hal-lawa <hal-lawa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: haya <haya@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 12:10:00 by haya              #+#    #+#             */
-/*   Updated: 2026/01/22 11:49:11 by hal-lawa         ###   ########.fr       */
+/*   Updated: 2026/01/22 15:04:44 by haya             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void custom_usleep(int64_t micro_sec, thread_args_t *c_args)
     int64_t start_time;
 
     start_time = calc_time_now();
-    while ((calc_time_now() - start_time)*1000 < micro_sec)
+    while ((calc_time_now() - start_time) * 1000 < micro_sec)
     {
         if (is_end_of_simulation(c_args) == 1)
             break;
@@ -81,7 +81,7 @@ void custom_print(thread_args_t *c_args, char *state)
 
 static void eat(thread_args_t *c_args)
 {
-    if((c_args->current_philo + 1) % 2 == 0)
+    if ((c_args->current_philo + 1) % 2 == 0)
         take_left_right(c_args);
     else
         take_right_left(c_args);
@@ -123,6 +123,7 @@ void *routine(void *args)
         custom_print(c_args, "sleeping");
         custom_usleep(c_args->philo->time_to_sleep * 1000, c_args);
         custom_print(c_args, "thinking");
+        custom_usleep(10000, c_args);
     }
     free(args);
     return (NULL);
