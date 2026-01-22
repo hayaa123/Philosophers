@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: haya <haya@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hal-lawa <hal-lawa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 19:27:55 by haya              #+#    #+#             */
-/*   Updated: 2026/01/21 21:28:27 by haya             ###   ########.fr       */
+/*   Updated: 2026/01/22 11:31:57 by hal-lawa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,9 @@ static int all_eat_enough(philo_data_t *philo_data)
         pthread_mutex_unlock(&(philo_data->time_mutex[i]));
         i++;
     }
+    pthread_mutex_lock(philo_data->end_mutex);
     philo_data->end_of_simulation = 1;
+    pthread_mutex_unlock(philo_data->end_mutex);
     pthread_mutex_lock(philo_data->print_mutex);
     printf("All Philosopher has eat enough times :D\n");
     pthread_mutex_unlock(philo_data->print_mutex);
@@ -87,12 +89,11 @@ static void *monitor_routine(void *philo_d)
             pthread_mutex_unlock(philo_c->end_mutex);
             break;
         }
+        pthread_mutex_unlock(philo_c->end_mutex);
         if (philo_c->philo->eat_count != 0 && all_eat_enough(philo_c))
         {
-            pthread_mutex_unlock(philo_c->end_mutex);
             break;
         }
-        pthread_mutex_unlock(philo_c->end_mutex);
         usleep(500);
     }
     return (NULL);
