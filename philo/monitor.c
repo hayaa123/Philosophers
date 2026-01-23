@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hal-lawa <hal-lawa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: haya <haya@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 19:27:55 by haya              #+#    #+#             */
-/*   Updated: 2026/01/22 11:31:57 by hal-lawa         ###   ########.fr       */
+/*   Updated: 2026/01/23 15:54:00 by haya             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ static void *monitor_routine(void *philo_d)
         {
             break;
         }
-        usleep(500);
+        usleep(3000);
     }
     return (NULL);
 }

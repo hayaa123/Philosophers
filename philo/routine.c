@@ -6,7 +6,7 @@
 /*   By: haya <haya@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 12:10:00 by haya              #+#    #+#             */
-/*   Updated: 2026/01/22 15:04:44 by haya             ###   ########.fr       */
+/*   Updated: 2026/01/23 16:15:46 by haya             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,12 @@
 static void take_left_right(thread_args_t *c_args)
 {
     pthread_mutex_lock(&(c_args->forks[c_args->current_philo]));
+    custom_print(c_args, "has taken a fork");
     if (c_args->current_philo == c_args->philo->philo_num - 1)
         pthread_mutex_lock(&(c_args->forks[0]));
     else
         pthread_mutex_lock(&(c_args->forks[c_args->current_philo + 1]));
+    custom_print(c_args, "has taken a fork");
 }
 
 static void take_right_left(thread_args_t *c_args)
@@ -27,7 +29,9 @@ static void take_right_left(thread_args_t *c_args)
         pthread_mutex_lock(&(c_args->forks[0]));
     else
         pthread_mutex_lock(&(c_args->forks[c_args->current_philo + 1]));
+    custom_print(c_args, "has taken a fork");
     pthread_mutex_lock(&(c_args->forks[c_args->current_philo]));
+    custom_print(c_args, "has taken a fork");
 }
 
 // static void take_forks(thread_args_t *c_args)
@@ -105,9 +109,7 @@ void *routine(void *args)
 
     c_args = (thread_args_t *)args;
     if ((c_args->current_philo + 1) % 2 == 0)
-    {
         usleep(100);
-    }
     pthread_mutex_lock(c_args->time_mutex);
     *(c_args->current_time_last) = calc_time_now();
     pthread_mutex_unlock(c_args->time_mutex);
@@ -123,7 +125,7 @@ void *routine(void *args)
         custom_print(c_args, "sleeping");
         custom_usleep(c_args->philo->time_to_sleep * 1000, c_args);
         custom_print(c_args, "thinking");
-        custom_usleep(10000, c_args);
+        custom_usleep(3000, c_args);
     }
     free(args);
     return (NULL);

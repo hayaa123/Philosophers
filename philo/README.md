@@ -15,6 +15,6 @@ To run this project follow these steps:
 # Resources
 - [Unix Threads in C play list by CodeVault](https://www.youtube.com/playlist?list=PLfqABt5AS4FmuQf70psXrsMLEDQXNkLq2)
 - ch 29 from the [The Linux Programming Interface]
-
+- My peer (abdsalah)[https://github.com/Abusalah0] help in testing and debugging :D.
 
 #
