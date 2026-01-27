@@ -1,19 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   put_err.c                                          :+:      :+:    :+:   */
+/*   init_malloced_mutex.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hal-lawa <hal-lawa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/19 11:32:56 by hal-lawa          #+#    #+#             */
-/*   Updated: 2026/01/25 14:16:56 by hal-lawa         ###   ########.fr       */
+/*   Created: 2026/01/25 14:34:08 by hal-lawa          #+#    #+#             */
+/*   Updated: 2026/01/27 10:59:44 by hal-lawa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-int	put_err(char *str)
+pthread_mutex_t	*init_malloced_mutext(void)
 {
-	write(2, str, ft_strlen(str));
-	return (1);
+	pthread_mutex_t	*time_mutex;
+
+	time_mutex = malloc(sizeof(pthread_mutex_t));
+	if (!time_mutex)
+		return (NULL);
+	pthread_mutex_init(time_mutex, NULL);
+	return (time_mutex);
 }

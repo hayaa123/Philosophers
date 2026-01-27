@@ -3,100 +3,100 @@
 /*                                                        :::      ::::::::   */
 /*   data_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: haya <haya@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hal-lawa <hal-lawa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 12:08:09 by haya              #+#    #+#             */
-/*   Updated: 2026/01/21 21:28:14 by haya             ###   ########.fr       */
+/*   Updated: 2026/01/25 14:33:56 by hal-lawa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-int64_t *init_time_of_last(int philo_num)
+int64_t	*init_time_of_last(int philo_num)
 {
-    int64_t *time_of_last_meal;
-    int i;
+	int64_t	*time_of_last_meal;
+	int		i;
 
-    time_of_last_meal = calloc(philo_num, sizeof(int64_t));
-    i = 0;
-    while (i < philo_num)
-    {
-        time_of_last_meal[i] = calc_time_now();
-        if (time_of_last_meal[i] == 0)
-            return (NULL);
-        i++;
-    }
-    return (time_of_last_meal);
+	time_of_last_meal = calloc(philo_num, sizeof(int64_t));
+	i = 0;
+	while (i < philo_num)
+	{
+		time_of_last_meal[i] = calc_time_now();
+		if (time_of_last_meal[i] == 0)
+			return (NULL);
+		i++;
+	}
+	return (time_of_last_meal);
 }
 
-philo_t *init_philo(char **argv)
+t_philo	*init_philo(char **argv)
 {
-    philo_t *philo;
+	t_philo	*philo;
 
-    philo = malloc(sizeof(philo_t));
-    philo->philo_num = ft_atoi(argv[1]);
-    philo->time_to_die = ft_atoi(argv[2]);
-    philo->time_to_eat = ft_atoi(argv[3]);
-    philo->time_to_sleep = ft_atoi(argv[4]);
-    if (argv[5])
-        philo->eat_count = ft_atoi(argv[5]);
-    else
-        philo->eat_count = 0;
-    return (philo);
+	philo = malloc(sizeof(t_philo));
+	if (!philo)
+		return (NULL);
+	philo->philo_num = ft_atoi(argv[1]);
+	philo->time_to_die = ft_atoi(argv[2]);
+	philo->time_to_eat = ft_atoi(argv[3]);
+	philo->time_to_sleep = ft_atoi(argv[4]);
+	if (argv[5])
+		philo->eat_count = ft_atoi(argv[5]);
+	else
+		philo->eat_count = 0;
+	return (philo);
 }
 
-pthread_mutex_t *init_time_mutext(int philo_num)
+pthread_mutex_t	*init_time_mutext(int philo_num)
 {
-    pthread_mutex_t *time_mutex;
-    int i;
+	pthread_mutex_t	*time_mutex;
+	int				i;
 
-    time_mutex = malloc(sizeof(pthread_mutex_t) * philo_num);
-    i = 0;
-    if (!time_mutex)
-        return (NULL);
-    while (i < philo_num)
-    {
-        pthread_mutex_init(&(time_mutex[i]), NULL);
-        i++;
-    }
-    return (time_mutex);
+	time_mutex = malloc(sizeof(pthread_mutex_t) * philo_num);
+	i = 0;
+	if (!time_mutex)
+		return (NULL);
+	while (i < philo_num)
+	{
+		pthread_mutex_init(&(time_mutex[i]), NULL);
+		i++;
+	}
+	return (time_mutex);
 }
 
-philo_data_t *init_philo_data(philo_t *philo)
+t_philo_data	*init_philo_data(t_philo *philo)
 {
-    philo_data_t *philo_data;
+	t_philo_data	*philo_data;
 
-    philo_data = malloc(sizeof(philo_data_t));
-    if (!philo_data)
-        return (NULL);
-    philo_data->time_mutex = init_time_mutext(philo->philo_num);
-    philo_data->time_of_last_meal = init_time_of_last(philo->philo_num);
-    philo_data->end_mutex = malloc(sizeof(pthread_mutex_t));
-    pthread_mutex_init(philo_data->end_mutex, NULL);
-    philo_data->print_mutex = malloc(sizeof(pthread_mutex_t));
-    pthread_mutex_init(philo_data->print_mutex, NULL);
-    philo_data->current_eat_count = ft_calloc(philo->philo_num, sizeof(int));
-    philo_data->end_of_simulation = 0;
-    philo_data->philo = philo;
-    if (validate_philo_data(philo_data) == 0)
-        return (NULL);
-    philo_data->start_of_simulation = 0;
-    return (philo_data);
+	philo_data = malloc(sizeof(t_philo_data));
+	if (!philo_data)
+		return (NULL);
+	philo_data->time_mutex = init_time_mutext(philo->philo_num);
+	philo_data->time_of_last_meal = init_time_of_last(philo->philo_num);
+	philo_data->end_mutex = init_malloced_mutext();
+	philo_data->print_mutex = init_malloced_mutext();
+	philo_data->current_eat_count = ft_calloc(philo->philo_num, sizeof(int));
+	philo_data->end_of_simulation = 0;
+	philo_data->philo = philo;
+	if (validate_philo_data(philo_data) == 0)
+		return (NULL);
+	philo_data->start_of_simulation = 0;
+	return (philo_data);
 }
 
-pthread_mutex_t *init_forks(int philo_num)
+pthread_mutex_t	*init_forks(int philo_num)
 {
-    pthread_mutex_t *forks;
-    int i;
+	pthread_mutex_t	*forks;
+	int				i;
 
-    forks = malloc(philo_num * sizeof(pthread_mutex_t));
-    i = 0;
-    if (!forks)
-        return (NULL);
-    while (i < philo_num)
-    {
-        pthread_mutex_init(&(forks[i]), NULL);
-        i++;
-    }
-    return (forks);
+	forks = malloc(philo_num * sizeof(pthread_mutex_t));
+	i = 0;
+	if (!forks)
+		return (NULL);
+	while (i < philo_num)
+	{
+		pthread_mutex_init(&(forks[i]), NULL);
+		i++;
+	}
+	return (forks);
 }
