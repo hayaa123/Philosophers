@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hal-lawa <hal-lawa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: haya <haya@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/20 19:58:23 by haya              #+#    #+#             */
-/*   Updated: 2026/01/24 12:30:53 by hal-lawa         ###   ########.fr       */
+/*   Updated: 2026/02/01 16:52:31 by haya             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	custom_print(t_thread_args *c_args, char *state)
 		pthread_mutex_unlock(c_args->print_mutex);
 		return ;
 	}
-	printf("%lu %i is %s\n", calc_time_now() - c_args->start_of_simulation,
+	printf("%lu %i %s\n", calc_time_now() - c_args->start_of_simulation,
 		c_args->current_philo + 1, state);
 	pthread_mutex_unlock(c_args->print_mutex);
 }

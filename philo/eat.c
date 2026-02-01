@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   eat.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hal-lawa <hal-lawa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: haya <haya@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 12:13:41 by hal-lawa          #+#    #+#             */
-/*   Updated: 2026/01/24 12:31:18 by hal-lawa         ###   ########.fr       */
+/*   Updated: 2026/02/01 16:52:20 by haya             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	eat(t_thread_args *c_args)
 	*(c_args->current_time_last) = calc_time_now();
 	*(c_args->current_eat_count) += 1;
 	pthread_mutex_unlock(c_args->time_mutex);
-	custom_print(c_args, "eating");
+	custom_print(c_args, "is eating");
 	custom_usleep(c_args->philo->time_to_eat * 1000, c_args);
 	return_forks(c_args);
 }
