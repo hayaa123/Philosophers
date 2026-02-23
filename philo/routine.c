@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: haya <haya@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: hal-lawa <hal-lawa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 12:10:00 by haya              #+#    #+#             */
-/*   Updated: 2026/02/01 16:52:38 by haya             ###   ########.fr       */
+/*   Updated: 2026/02/05 15:31:28 by hal-lawa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	sleep_and_think(t_thread_args	*c_args)
 	custom_print(c_args, "is sleeping");
 	custom_usleep(c_args->philo->time_to_sleep * 1000, c_args);
 	custom_print(c_args, "is thinking");
-	custom_usleep(3000, c_args);
+	custom_usleep(500, c_args);
 }
 
 void	*routine(void *args)

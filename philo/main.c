@@ -6,7 +6,7 @@
 /*   By: hal-lawa <hal-lawa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/24 11:50:48 by hal-lawa          #+#    #+#             */
-/*   Updated: 2026/01/25 14:32:12 by hal-lawa         ###   ########.fr       */
+/*   Updated: 2026/02/05 15:34:43 by hal-lawa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,9 @@ int	free_return(t_philo *philo, pthread_t *philos, t_philo_data *philo_data,
 int	wait_monitor_free(t_philo_data *philo_data, pthread_t monitor,
 		t_philo *philo, pthread_mutex_t *forks)
 {
+	pthread_mutex_lock(philo_data->end_mutex);
 	philo_data->end_of_simulation = 1;
+	pthread_mutex_unlock(philo_data->end_mutex);
 	pthread_join(monitor, NULL);
 	return (free_return(philo, NULL, philo_data, forks));
 }
