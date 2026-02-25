@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hal-lawa <hal-lawa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: haya <haya@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 12:10:00 by haya              #+#    #+#             */
-/*   Updated: 2026/02/05 15:31:28 by hal-lawa         ###   ########.fr       */
+/*   Updated: 2026/02/25 09:47:56 by haya             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,25 @@ static void	one_philo_routine(t_thread_args	*c_args)
 
 static void	sleep_and_think(t_thread_args	*c_args)
 {
+	int	remaining;
+	int	think_time;
+	int	time_from_last;
+
 	custom_print(c_args, "is sleeping");
 	custom_usleep(c_args->philo->time_to_sleep * 1000, c_args);
 	custom_print(c_args, "is thinking");
-	custom_usleep(500, c_args);
+	pthread_mutex_lock(c_args->time_mutex);
+	time_from_last = calc_time_now() - *(c_args->current_time_last);
+	pthread_mutex_unlock(c_args->time_mutex);
+	remaining = c_args->philo->time_to_die - time_from_last;
+	remaining -= c_args->philo->time_to_eat;
+	if (remaining <= 0)
+		think_time = 0;
+	else
+		think_time = remaining / 2;
+	if (think_time > 200)
+		think_time = 200;
+	custom_usleep(think_time * 1000, c_args);
 }
 
 void	*routine(void *args)
